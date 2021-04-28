@@ -1,7 +1,88 @@
 ; (function ($) {
 
     "use strict";
+    //Api url creation
+    var apiurl = ""
+    if (window.location.href == "http://127.0.0.1:5500/index.html")
+        apiurl = "http://127.0.0.1:8000/";
+    else apiurl = "https://ecommerce-drf.herokuapp.com/";
 
-    // Go!
+    getProducts();
+    getBanners();
 
-});
+    function getProducts() {
+        $.get(apiurl + "product/", (product) => {
+            renderProducts(product);
+        })
+    }
+    function createTemplate(product) {
+        return `
+      <div class="col-6 col-xl-3 p-1">
+                    <div class="wow fadeInUp" data-wow-delay=".0s">
+                        <div class="card card-fill">
+                            <div class="card-image">
+                                <a href="#">
+                                    <img src="${product.image}" class="card-img-top img-hover" alt="${product.name}">
+                                </a>
+                            </div>
+                            <div class="card-body p-3 p-lg-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h2 class="card-title mb-1 h5">
+                                            <a href="product.html" class="text-dark">
+                                                ${product.name}
+                                            </a>
+                                        </h2>
+                                        <small class="pre-label text-muted">
+                                            <span>${product.discount}</span>
+                                            <s>${product.price}</s>
+                                        </small>
+                                    </div>
+                                    <div>
+                                        <a href="product.html" class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Add to cart">
+                                            <i class="icon icon-cart font-size-xl"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        `;
+    }
+
+    function renderProducts(products) {
+        const template = products.length === 0 ? `<p class="text-center">No matching results found.</p>` : products.map((product) => createTemplate(product)).join("\n");
+        $("#products").html(template);
+    }
+
+    function getBanners() {
+        $.get(apiurl + "banners/", (banners) => {
+            renderBanners(banners);
+        })
+    }
+    function bannerTemplate(banners) {
+        return `<div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="wow fadeInUp" data-wow-delay=".2s">
+            <div class="box box-image box-hover-fall br-sm" style="background-image:url(${banners.image})">
+                <div class="box-spacer-xl"></div>
+                <div class="box-content">
+                    <h2 class="display-4 font-family-body text-white">
+                        <strong>${banners.quote}</strong>
+                    </h2>
+                    <p><span><a href="#" class="text-muted">${banners.tag1}</a></span></p>
+                    <p><span><a href="#" class="text-muted">${banners.tag2}</a></span></p>
+                    <p><span><a href="#" class="text-muted">${banners.tag3}</a></span></p>
+                </div>
+            </div>
+        </div>
+    </div>`
+    }
+    function renderBanners(banners){
+        const template = banners.length===0 ? ``: banners.map((banner)=>bannerTemplate(banner)).join("\n");
+        $("#banners").html(template);
+    }
+
+})(jQuery);
+
+
