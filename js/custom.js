@@ -21,7 +21,7 @@
                     <div class="wow fadeInUp" data-wow-delay=".0s">
                         <div class="card card-fill">
                             <div class="card-image">
-                                <a href="#">
+                                <a href="#" data-toggle="modal" data-target="#${product.id}">
                                     <img src="${product.image}" class="card-img-top img-hover" alt="${product.name}">
                                 </a>
                             </div>
@@ -29,17 +29,17 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <h2 class="card-title mb-1 h5">
-                                            <a href="product.html" class="text-dark">
+                                            <a href="#" class="text-dark">
                                                 ${product.name}
                                             </a>
                                         </h2>
                                         <small class="pre-label text-muted">
-                                            <span>${product.discount}</span>
+                                            <span>${product.discount_price}</span>
                                             <s>${product.price}</s>
                                         </small>
                                     </div>
                                     <div>
-                                        <a href="product.html" class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Add to cart">
+                                        <a href="#" class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Add to cart">
                                             <i class="icon icon-cart font-size-xl"></i>
                                         </a>
                                     </div>
@@ -48,6 +48,116 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="modal fade" id="${product.id}" tabindex="-1" role="dialog" aria-labelledby="${product.id}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="${product.id}Title">${product.name}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                    <section class="bg-white py-3">
+                    <div class="container">
+                        <div class="row align-items-lg-center">
+                            <!-- Product gallery -->
+                            <div class="col-lg-7 col-xl-8 pb-5">
+                            <a href="#" data-toggle="modal" data-target="#${product.id}">
+                            <img src="${product.image}" class="card-img-top img-hover" alt="${product.name}">
+                        </a>
+                                </div>
+
+                            <!-- Product info -->
+
+                            <div class="col-lg-5 col-xl-4">
+                                <div class="bg-light shadow-sm br-sm p-3 p-lg-4">
+
+                                    <!-- Product order -->
+
+                                    <div class="clearfix">
+
+                                        <!-- Product price -->
+
+                                        <div class="h2 mb-0">
+                                            <span>Rs ${product.discount_price}</span>
+                                            <small>
+                                                <del>Rs ${product.price}</del>
+                                            </small>
+                                        </div>
+
+                                        <hr>
+
+                                        <!-- Product brand -->
+
+                                        <div class="row">
+                                            <div class="col-6 col-lg-12">
+                                                <div class="row mb-2">
+                                                    <div class="col-xl-4">
+                                                        <span class="text-muted">Shipping</span>
+                                                    </div>
+                                                    <div class="col-xl-8">
+                                                        <i class="icon icon-checkmark-circle"></i> Free shipping
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-lg-12">
+                                                <div class="row mb-2">
+                                                    <div class="col-xl-4">
+                                                        <span class="text-muted">Availability</span>
+                                                    </div>
+                                                    <div class="col-xl-8">
+                                                        <i class="icon icon-checkmark-circle"></i> In stock
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                        <!-- Product size -->
+
+                                        <!-- Product quantity -->
+
+                                        <div class="mb-2">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button class="btn btn-block btn-primary">
+                                                        <i class="icon icon-cart"></i> Add to cart
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                    </div>
+
+                                    <!-- Add to basket -->
+                                    <div class="btn-group w-100">
+                                    <span class="btn btn-sm btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                                        <span class="show"><i class="fa fa-heart-o"></i> Whish</span>
+                                        <span class="hide"><i class="fa fa-heart"></i> Whislisted</span>
+                                    </span>
+                                    <span class="btn btn-sm btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                                        <span class="show"><i class="fa fa-eye-slash"></i> Watch</span>
+                                        <span class="hide"><i class="fa fa-eye"></i> Watching</span>
+                                    </span>
+                                </div>
+                                    
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
         `;
     }
 
@@ -78,8 +188,8 @@
         </div>
     </div>`
     }
-    function renderBanners(banners){
-        const template = banners.length===0 ? `hello`: banners.map((banner)=>bannerTemplate(banner)).join("\n");
+    function renderBanners(banners) {
+        const template = banners.length === 0 ? `hello` : banners.map((banner) => bannerTemplate(banner)).join("\n");
         $("#banners").html(template);
     }
 
