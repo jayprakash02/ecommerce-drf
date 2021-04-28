@@ -23,7 +23,14 @@ COLOR_CHOICES = (
 	('B', 'Blue'),
 )
 
+class Banner(models.Model):
+    image = models.ImageField(upload_to='banners/')
+    quote = models.CharField(max_length=30)
+    tag1 = models.CharField(max_length=10)
+    tag2 = models.CharField(max_length=10)
+    tag3 = models.CharField(max_length=10)
 
+    
 class Item(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)

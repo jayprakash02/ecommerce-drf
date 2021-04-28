@@ -57,7 +57,7 @@
     }
 
     function getBanners() {
-        $.get(apiurl + "banners/", (banners) => {
+        $.get(apiurl + "banner/", (banners) => {
             renderBanners(banners);
         })
     }
@@ -79,7 +79,7 @@
     </div>`
     }
     function renderBanners(banners){
-        const template = banners.length===0 ? ``: banners.map((banner)=>bannerTemplate(banner)).join("\n");
+        const template = banners.length===0 ? `hello`: banners.map((banner)=>bannerTemplate(banner)).join("\n");
         $("#banners").html(template);
     }
 

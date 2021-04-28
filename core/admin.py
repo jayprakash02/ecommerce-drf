@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from .models import Item
+from .models import Item,Banner
 
 class ItemResource(resources.ModelResource):
 
@@ -12,3 +12,4 @@ class ItemAdmin(ImportExportModelAdmin):
     resource_class = ItemResource
 
 admin.site.register(Item,ItemAdmin)
+admin.site.register(Banner)
