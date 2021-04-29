@@ -14,10 +14,12 @@ $(document).ready(function () {
             return v.toString(16);
         });
     }
+    var expDate = new Date();
+    expDate.setTime(expDate.getTime() + (30 * 24 * 60 * 60 * 1000));
 
     key = $.cookie('eco_drf_key');
     if (key === undefined) {
-        key = $.cookie('eco_drf_key', uuidv4());
+        key = $.cookie('eco_drf_key', uuidv4(), { expires: expDate, SameSite: 'none' });
     }
     console.log(key)
 
@@ -104,11 +106,10 @@ $(document).ready(function () {
         modal.find(".modal-price").text(button.data("price"));
         modal.find(".modal-discount").text(button.data("discount"));
     });
-
-
+    $('.loader').removeClass('loaded');
     getProducts();
     getBanners();
-
+    $('.loader').addClass('loaded');
 
 });
 
