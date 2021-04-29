@@ -3,7 +3,7 @@
     "use strict";
     //Api url creation
     var apiurl = ""
-    if (window.location.href == "http://127.0.0.1:5500/index.html")
+    if ((window.location.href).includes("127.0.0.1"))
         apiurl = "http://127.0.0.1:8000/";
     else apiurl = "https://ecommerce-drf.herokuapp.com/";
 
@@ -21,8 +21,8 @@
                     <div class="wow fadeInUp" data-wow-delay=".0s">
                         <div class="card card-fill">
                             <div class="card-image">
-                                <a href="#" data-toggle="modal" data-target="#${product.id}">
-                                    <img src="${product.image}" class="card-img-top img-hover" alt="${product.name}">
+                                <a href="#" data-toggle="modal" data-target="#templateModal" data-title="${product.name}"  data-image="${product.image}" data-price="${product.price}" data-discount="${product.discount_price}">
+                                    <img src="${product.image}" class="card-img-top img-hover" >
                                 </a>
                             </div>
                             <div class="card-body p-3 p-lg-4">
@@ -49,115 +49,6 @@
                     </div>
                 </div>
                 
-                <div class="modal fade" id="${product.id}" tabindex="-1" role="dialog" aria-labelledby="${product.id}Title" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="${product.id}Title">${product.name}</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                    <section class="bg-white py-3">
-                    <div class="container">
-                        <div class="row align-items-lg-center">
-                            <!-- Product gallery -->
-                            <div class="col-lg-7 col-xl-8 pb-5">
-                            <a href="#" data-toggle="modal" data-target="#${product.id}">
-                            <img src="${product.image}" class="card-img-top img-hover" alt="${product.name}">
-                        </a>
-                                </div>
-
-                            <!-- Product info -->
-
-                            <div class="col-lg-5 col-xl-4">
-                                <div class="bg-light shadow-sm br-sm p-3 p-lg-4">
-
-                                    <!-- Product order -->
-
-                                    <div class="clearfix">
-
-                                        <!-- Product price -->
-
-                                        <div class="h2 mb-0">
-                                            <span>Rs ${product.discount_price}</span>
-                                            <small>
-                                                <del>Rs ${product.price}</del>
-                                            </small>
-                                        </div>
-
-                                        <hr>
-
-                                        <!-- Product brand -->
-
-                                        <div class="row">
-                                            <div class="col-6 col-lg-12">
-                                                <div class="row mb-2">
-                                                    <div class="col-xl-4">
-                                                        <span class="text-muted">Shipping</span>
-                                                    </div>
-                                                    <div class="col-xl-8">
-                                                        <i class="icon icon-checkmark-circle"></i> Free shipping
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6 col-lg-12">
-                                                <div class="row mb-2">
-                                                    <div class="col-xl-4">
-                                                        <span class="text-muted">Availability</span>
-                                                    </div>
-                                                    <div class="col-xl-8">
-                                                        <i class="icon icon-checkmark-circle"></i> In stock
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <hr>
-
-                                        <!-- Product size -->
-
-                                        <!-- Product quantity -->
-
-                                        <div class="mb-2">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <button class="btn btn-block btn-primary">
-                                                        <i class="icon icon-cart"></i> Add to cart
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <hr>
-
-                                    </div>
-
-                                    <!-- Add to basket -->
-                                    <div class="btn-group w-100">
-                                    <span class="btn btn-sm btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-                                        <span class="show"><i class="fa fa-heart-o"></i> Whish</span>
-                                        <span class="hide"><i class="fa fa-heart"></i> Whislisted</span>
-                                    </span>
-                                    <span class="btn btn-sm btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-                                        <span class="show"><i class="fa fa-eye-slash"></i> Watch</span>
-                                        <span class="hide"><i class="fa fa-eye"></i> Watching</span>
-                                    </span>
-                                </div>
-                                    
-
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
-                    </div>
-                  </div>
-                </div>
-              </div>
         `;
     }
 
@@ -192,6 +83,16 @@
         const template = banners.length === 0 ? `hello` : banners.map((banner) => bannerTemplate(banner)).join("\n");
         $("#banners").html(template);
     }
+
+    $("#templateModal").on("show.bs.modal", function(event) {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        modal.find(".modal-title").text(button.data("title"));
+        modal.find(".modal-image").attr("src", button.data("image"));
+        modal.find(".modal-price").text(button.data("price"));
+        modal.find(".modal-discount").text(button.data("discount"));
+      });
+
 
 })(jQuery);
 
