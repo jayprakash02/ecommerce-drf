@@ -1,14 +1,26 @@
-; (function ($) {
+$(document).ready(function () {
 
     "use strict";
     //Api url creation
     var apiurl = ""
+    var key = ""
     if ((window.location.href).includes("127.0.0.1"))
         apiurl = "http://127.0.0.1:8000/";
     else apiurl = "https://ecommerce-drf.herokuapp.com/";
 
-    getProducts();
-    getBanners();
+    function uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    key = $.cookie('eco_drf_key');
+    if (key === undefined) {
+        key = $.cookie('eco_drf_key', uuidv4());
+    }
+    console.log(key)
+
 
     function getProducts() {
         $.get(apiurl + "product/", (product) => {
@@ -84,16 +96,20 @@
         $("#banners").html(template);
     }
 
-    $("#templateModal").on("show.bs.modal", function(event) {
+    $("#templateModal").on("show.bs.modal", function (event) {
         var button = $(event.relatedTarget);
         var modal = $(this);
         modal.find(".modal-title").text(button.data("title"));
         modal.find(".modal-image").attr("src", button.data("image"));
         modal.find(".modal-price").text(button.data("price"));
         modal.find(".modal-discount").text(button.data("discount"));
-      });
+    });
 
 
-})(jQuery);
+    getProducts();
+    getBanners();
+
+
+});
 
 

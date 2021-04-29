@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.db import models
-
+import uuid
 
 LABEL_CHOICES = (
 	('P', 'primary'),
@@ -22,6 +22,10 @@ COLOR_CHOICES = (
 	('R', 'Red'),
 	('B', 'Blue'),
 )
+
+class User(models.Model):
+    key = models.UUIDField(default = uuid.uuid4,editable=False)
+    visit = models.IntegerField(default=0)
 
 class Banner(models.Model):
     image = models.ImageField(upload_to='banners/')
@@ -47,3 +51,23 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
+class Customer(models.Model):
+    key = models.UUIDField(default=uuid.uuid4,editable=False)
+    visit = models.IntegerField(default=0)
+
+class OrderItem(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
+	ordered = models.BooleanField(default=False)
+	item = models.ForeignKey(Item, on_delete=models.CASCADE)
+	quantity = models.IntegerField(default=1)
+
+
+class Order(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
+	items = models.ManyToManyField(OrderItem)
+	ordered_date = models.DateTimeField()
+	ordered = models.BooleanField(default=False)
+	payment = models.BooleanField(default=False)
+	being_delivered = models.BooleanField(default=False)
+	received = models.BooleanField(default=False)
