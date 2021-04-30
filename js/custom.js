@@ -19,9 +19,47 @@ $(document).ready(function () {
 
     key = $.cookie('eco_drf_key');
     if (key === undefined) {
-        key = $.cookie('eco_drf_key', uuidv4(), { expires: expDate, SameSite: 'none' });
+        $.cookie('eco_drf_key', uuidv4(), { expires: expDate, SameSite: 'none' });
+        key = $.cookie('eco_drf_key');
     }
     console.log(key)
+
+
+
+    function renderCart(products) {
+        var template = "";
+        template += `
+                <li class="list-group-item p-4">
+                <div class="row no-gutters align-items-center">
+                <div class="col-md-2 mb-2 mb-lg-0">
+                    <img src="" alt=""
+                    class="img-fluid br-sm" />
+                </div>
+                <div class="col-md-6 pl-md-2 mb-2 mb-lg-0">
+                <p class="my-0">${products.name}</p>
+                    <small class="text-muted">Brief description</small>
+                </div>
+                <div class="col-6 col-md-2">
+                    <p>${products.quantity}</p>
+                </div>
+                <div class="col-6 col-md-2 text-right text-muted">
+                <div>Rs ${products.price}</div>
+                <small><del>$1499</del></small>
+                </div>
+                </div>
+                </li>
+                `;
+        $("#Cart").append(template);
+    }
+
+    function getCart(key) {
+        $.get(apiurl + "getcart/", { key: key }, (product) => {
+            
+            for (var i = 0; i < product.length; i++) {
+                renderCart(product[i]);
+            }
+        })
+    }
 
 
     function getProducts() {
@@ -53,7 +91,7 @@ $(document).ready(function () {
                                         </small>
                                     </div>
                                     <div>
-                                        <a href="#" class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Add to cart">
+                                        <a href="#" id="addtocart" class="d-inline-block" data-toggle="tooltip" data-id="${product.id}"  data-placement="top" title="Add to cart">
                                             <i class="icon icon-cart font-size-xl"></i>
                                         </a>
                                     </div>
@@ -107,10 +145,22 @@ $(document).ready(function () {
         modal.find(".modal-discount").text(button.data("discount"));
     });
     $('.loader').removeClass('loaded');
+    getCart(key);
     getProducts();
     getBanners();
     $('.loader').addClass('loaded');
 
+    $('body').on('click', '#addtocart', function (event) {
+        event.preventDefault();
+        var item_id = $(this).attr("data-id");
+        $.post(apiurl + 'orderitem/', { key: key, item_id: item_id, quantity: 1 })
+            .done(console.log($(this).attr("data-id")))
+    });
+
+    $("#addtocart").click(function () {
+        console.log("button")
+        $.post(apiurl + 'orderitem/', { key: key, item_id: item_id, quantity: 1 })
+
+    });
+
 });
-
-
